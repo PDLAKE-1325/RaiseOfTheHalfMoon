@@ -1,7 +1,7 @@
 #include "Rothm.h"
 
 void start(game* game){
-    printf("시이작");
+    printf("실행");
 }
 void update(game* game){
     if(game->input['d']) {
@@ -9,7 +9,7 @@ void update(game* game){
     }
 }
 void finish(game* game){
-    printf("끝");
+    printf("종료");
 }
 
 int main(){
