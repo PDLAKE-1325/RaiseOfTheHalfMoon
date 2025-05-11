@@ -14,8 +14,11 @@ void finish(game* game){
 
 int main(){
     srand(time(NULL));
+    printf("=-1");
     
     game* game = newGame(start,finish,update,10,true);
+    printf("=2");
     launch(game);
+    printf("=/2");
 }
 // gcc Rothm_main.c Rothm.c -o Rothm_main

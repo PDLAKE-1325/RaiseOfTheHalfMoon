@@ -61,7 +61,6 @@ typedef struct stage{
 }stage;
 typedef struct map
 {
-	void(*createBoard)(struct map*);
 	int map_cnt;
 	node* nodes;
 }map;

@@ -104,17 +104,6 @@ node* createNode(){
     node->next = NULL;
     return node;
 }
-void appendNodeToBoard(node* target,node* to){
-    if(to==NULL){
-        to = target;
-        return;
-    }
-    printf("_");
-    node* cur = to;
-    while (cur->next!=NULL)
-        cur = cur->next;
-    cur->next = target;
-}
 void connectNode(node* from, node* to){
     _link* __link = (struct _link*)malloc(sizeof(struct _link));
     __link->target = to;
@@ -137,13 +126,20 @@ void countNode(node* head){
     printf("%d",cnt);
 }
 void createBoard(map* map){ //Node* nodes[] 받아옴
+    printf("=2");
     // int rnd = rand()%map->map_cnt;
     int rnd = 0;
     stage selected_stage = stages[rnd];
     char node_cnt = selected_stage.node_cnt;
-    for (int i=0; i<node_cnt; i++){
+    map->nodes = createNode();
+    for (int i=0; i<node_cnt-1; i++){
         node* new_node = createNode();
-        appendNodeToBoard(new_node,map->nodes);
+        node* cur = map->nodes;
+        while (cur->next!=NULL)
+        {
+            cur = cur->next;
+        }
+        cur->next = new_node;
     }
     int node_num=0;
     countNode(map->nodes);
@@ -207,7 +203,10 @@ static void tick(game* game){
     render(game);
 }
 void launch(game* game){
+    printf("=1");
     game->start(game);
+    createBoard(game->gameboard);
+    printf("=/1");
     while (!game->is_finished){
         tick(game); 
 #ifdef _WIN32
@@ -219,10 +218,10 @@ void launch(game* game){
     game->finish(game);
     final_finish(game);
 }
-static map* newMap(void(*createBoard)(map*)){
+static map* newMap(){
     map* map = (struct map*)malloc(sizeof(struct map));
-    map->createBoard = createBoard;
     map->nodes=NULL;
+    map->map_cnt = sizeof(stages)/sizeof(stage);
     return map;
 }
 game* newGame(void(*start)(game*), void(*finish)(game*), void(*update)(game*), int TPS, bool test){
@@ -238,9 +237,8 @@ game* newGame(void(*start)(game*), void(*finish)(game*), void(*update)(game*), i
     game->finish = finish;
     game->game_phase = 0;
     game->is_finished = false;
-    game->gameboard = newMap(createBoard);
-    game->gameboard->nodes=NULL;
-    game->gameboard->map_cnt = sizeof(stages)/sizeof(stage);
-    game->gameboard->createBoard(game->gameboard);
+    printf("=0\n");
+    game->gameboard = newMap();
+    printf("=/0\n");
     return game;
 }
